@@ -52,5 +52,19 @@ async function loadInitialData(sClass) {
         let earlyUnstakedFee = await cObj.methods
         .getEarlyUnstakeFeePercentage()
         .call();
+
+        //ELEMENTS --CLASS
+        document.getElementById("total-locked-tokens-value").innerHTML = 
+        `${totalLockedTokens / 10 ** 18 } ${SELECT_CONTRACT[_NETWORK_ID].TOKEN.symbol}`;
+
+        document
+        .querySelectorAll(".early-unstake-fee-value")
+        .forEach(function (element) {
+            element.innerHTML = `${earlyUnstakedFee / 100}%`;
+        });
+
+        let minStakeAmount = await cObj.methods.getMinimumStakingAmount().call();
+        minStakeAmount = Number(minStakeAmount);
+        let minA;
     }
 }
