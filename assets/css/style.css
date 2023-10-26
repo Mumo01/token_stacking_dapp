@@ -2472,7 +2472,7 @@ header .navbar-sticky {
 
 .staking-area .card .staking-tab-content .info-box .info-right span {
   font-family: var(--primary-font);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .staking-area
@@ -3015,7 +3015,7 @@ a.page-numbers:hover {
 }
 
 .breadcrumb-area {
-  height: 450px;
+  height: 80px;
   z-index: 1;
 }
 
