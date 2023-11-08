@@ -56,7 +56,7 @@ library Address {
     function functionStaticCall(
             address target,
             bytes memory data,
-            string memory errorMMessage
+            string memory errorMessage
         ) internal view returns (bytes memory) {
             require(isContract(target), "Address: static call to non-contract");
 

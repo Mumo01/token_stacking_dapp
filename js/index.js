@@ -3,15 +3,18 @@ loadInitialData("sevenDays");
 connectMe("metamask_wallet");
 function connectWallet() {}
 
+
 function openTab(event, name) {
     console.log(name);
     contractCall = name;
     getSelectedTab(name);
     loadInitialData(name);
-}
+} 
+ 
 
 async function loadInitialData(sClass) {
     console.log(sClass);
+    
     try {
         clearInterval(countDownGlobal);
         
@@ -19,12 +22,16 @@ async function loadInitialData(sClass) {
             SELECT_CONTRACT[_NETWORK_ID].STACKING.abi,
             SELECT_CONTRACT[_NETWORK_ID].STACKING[sClass].address
         );
-
+    
         //ID ELEMENT DATA
         let totalUsers = await cObj.methods.getTotalUsers().call();
+        console.log("Total Users:", totalUsers);
+
         let cApy = await cObj.methods.getAPY().call();
+        console.log("cAPY:", cApy);
         //GET USER
         let userDetail = await cObj.methods.getUser(currentAddress).call();
+        console.log("User Detail:", userDetail);
 
         const user = {
             lastRewardCalculationTime: userDetail.lastRewardCalculationTime,
@@ -43,7 +50,7 @@ async function loadInitialData(sClass) {
 
         //ELEMENTS --ID
         document.getElementById(
-            "num-of-staackers-value"
+            "num-of-stackers-value"
         ).innerHTML = `${totalUsers}`;
         document.getElementById("apy-value-feature").innerHTML = `${cApy} %`;
 
@@ -104,7 +111,7 @@ async function loadInitialData(sClass) {
 
             let rewardBal = await cObj.methods
                 .getUserEstimatedRewards()
-                .call({ from: currentAddress });
+                .call({ from: '0x20c322b38ca7a8f8940f71352db399797127e74a' });
 
             document.getElementById("user-reward-balance-value").value = `Reward: ${
                 rewardBal / 10 ** 18
@@ -120,9 +127,9 @@ async function loadInitialData(sClass) {
             document.getElementById(
                 "user-token-balance"
             ).innerHTML = `Balance: ${balMainUser}`;
+            
 
-            let currentAddress = new Date().getTime();
-
+            let currentDate = new Date().getTime();
             if (isStakingPaused) {
                 isStakingPausedText = "Paused";
             } else if ( currentDate < startDate) {
@@ -163,7 +170,7 @@ async function loadInitialData(sClass) {
             });
     } catch (error) {
         console.log(error);
-        notfy.error(
+        notyf.error(
             `Unable to fetch data from ${SELECT_CONTRACT[_NETWORK_ID].network_name}!\n Please refresh this page`
         );
     }
@@ -213,9 +220,10 @@ async function connectMe(_provider) {
         } else {
             let sClass = getSelectedTab();
             console.log(sClass);
+            
         }
     } catch (error) {
-        notfy.error(error.message);
+        notyf.error(error.message);
     }
 }
 
@@ -247,7 +255,7 @@ async function stackTokens() {
         console.log("balMainUser", balMainUser);
 
         if (balMainUser < nTokens) {
-            notfy.error(
+            notyf.error(
                 `insufficient tokens on ${SELECT_CONTRACT[_NETWORK_ID].network_name}.\nPlease but some tokens first!`
             );
             return;
@@ -270,8 +278,8 @@ async function stackTokens() {
         }
     } catch (error) {
         console.log(error);
-        notfy.dismiss(notification);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.dismiss(notification);
+        notyf.error(formatEthErrorMsg(error));
     }
 }
 
@@ -289,7 +297,7 @@ async function approveTokenSpend(_mint_fee_wei, sClass) {
             });
     } catch (error) {
         console.log(error);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.error(formatEthErrorMsg(error));
         return;
     }
 
@@ -308,7 +316,7 @@ async function approveTokenSpend(_mint_fee_wei, sClass) {
         })
         .catch((error) => {
             console.log(error);
-            notfy.error(formatEthErrorMsg(error));
+            notyf.error(formatEthErrorMsg(error));
             return;
         });
 }
@@ -326,7 +334,7 @@ async function stackTokenMain(_amount_wei, sClass) {
             });
     } catch (error) {
         console.log(error);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.error(formatEthErrorMsg(error));
         return;
     }
 
@@ -379,7 +387,7 @@ async function stackTokenMain(_amount_wei, sClass) {
 
         .catch((error) => {
             console.log(error);
-            notfy.error(formatEthErrorMsg(error));
+            notyf.error(formatEthErrorMsg(error));
             return;
         })
 }
@@ -393,7 +401,7 @@ async function unstackTokens() {
         }
 
         if (isNaN(nTokens) || nTokens == 0 || Number(nTokens) < 0) {
-            notfy.error(`Invalid token amount!`);
+            notyf.error(`Invalid token amount!`);
             return;
         }
 
@@ -412,7 +420,7 @@ async function unstackTokens() {
         balMainUser = Number(balMainUser.stakeAmount) / 10 ** 18;
 
         if (balMainUser < nTokens) {
-            notfy.error(
+            notyf.error(
                 `Insufficient staked tokens on ${SELECT_CONTRACT[_NETWORK_ID].network_name}!`
             );
             return;
@@ -421,8 +429,8 @@ async function unstackTokens() {
         unstackTokenMain(tokenToTransfer, oContractStacking, sClass);
     } catch (error) {
         console.log(error);
-        notfy.dismiss(notification);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.dismiss(notification);
+        notyf.error(formatEthErrorMsg(error));
     }
 }
 
@@ -437,7 +445,7 @@ async function unstackTokenMain(_amount_wei, oContractStacking, sClass) {
             });
     } catch (error) {
         console.log(error);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.error(formatEthErrorMsg(error));
         return;
     }
 
@@ -488,7 +496,7 @@ async function unstackTokenMain(_amount_wei, oContractStacking, sClass) {
 
         .catch((error) => {
             console.log(error);
-            notfy.error(formatEthErrorMsg(error));
+            notyf.error(formatEthErrorMsg(error));
             return;
         });
 }
@@ -506,16 +514,16 @@ async function claimTokens() {
         console.log("rewardBal", rewardBal);
 
         if (!rewardBal) {
-            notfy.dismiss(notification);
-            notfy.error(`Insufficient reward tokens to claim!`);
+            notyf.dismiss(notification);
+            notyf.error(`Insufficient reward tokens to claim!`);
             return;
         }
 
         claimTokenMain(oContractStacking, sClass);
     } catch (error) {
         console.log(error);
-        notfy.dismiss(notification);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.dismiss(notification);
+        notyf.error(formatEthErrorMsg(error));
 
     }
 }
@@ -530,11 +538,10 @@ async function claimTokenMain(oContractStacking, sClass) {
         console.log("gasEstimation", gasEstimation);
     } catch (error) {
         console.log(error);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.error(formatEthErrorMsg(error));
     
     return;
     }
-}
 
     oContractStacking.methods
     .claimReward()
@@ -582,7 +589,7 @@ async function claimTokenMain(oContractStacking, sClass) {
 
     .catch((error) => {
         console.log(error);
-        notfy.error(formatEthErrorMsg(error));
+        notyf.error(formatEthErrorMsg(error));
         return;
     });
-
+}

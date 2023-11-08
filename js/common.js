@@ -28,16 +28,15 @@ async function commonProviderDetector(_provider) {
         }
     }
 }
-
 async function commonInjectedConnect(_provider, _provider_name) {
     await _provider.enable();
 
-    setWebEvents(_provider);
+    setWeb3Events(_provider);
 
     web3 = new Web3(_provider);
 
     //GET connected chain id from ethereum node
-    let currentBetwordId = await web3.eth.getChainId();
+    let currentNetworkId = await web3.eth.getChainId();
     currentNetworkId = currentNetworkId.toString();
     console.log("network", currentNetworkId);
 
@@ -47,7 +46,8 @@ async function commonInjectedConnect(_provider, _provider_name) {
     console.log(accounts);
 
     currentAddress = accounts[0].toLowerCase();
-
+    
+    
     if (currentNetworkId != _NETWORK_ID) {
         notyf.error(
             `Please connect Wallet on ${SELECT_CONTRACT[_NETWORK_ID].network_name}!`
@@ -147,3 +147,4 @@ function getContractObj(sClass) {
         SELECT_CONTRACT[_NETWORK_ID].STACKING[sClass].address
     );
 }
+
