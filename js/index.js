@@ -85,7 +85,12 @@ async function loadInitialData(sClass) {
         document
             .querySelectorAll(".Minimum-Staking-Amount")
             .forEach(function (element) {
-                element.innerHTML = `${(10000000).toLocaleString()} ${
+                element.innerHTML = `${minA}`;
+            });
+        document
+            .querySelectorAll(".Maximum-Staking-Amount")
+            .forEach(function (element) {
+                element.innerHTML = `${(5000).toLocaleString()} ${
                     SELECT_CONTRACT[_NETWORK_ID].TOKEN.symbol
                 }`;
             });
