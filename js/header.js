@@ -7,7 +7,7 @@ SELECT_CONTRACT[_NETWORK_ID] = {
     STACKING: {
         //
         sevenDays: { 
-            address: "0x76B8b6D70ddc3EFA42ee371aD94C688910f5D81C", //new address deployed
+            address: "0x3233F5468B6c18679244fcaFd0705f3247C9A9Ec", //new address deployed
         },
         tenDays: { 
             address: "0x052272f56bccB87ec338B1CF1031CbFd43Bb187e",
